@@ -43,15 +43,15 @@ for (let costItem of budget.costItems) {
   div.classList.add(costItem.category);
 
   // Add the content of each row
-  for (let a = 0; a < Object.values(costItem).length; a++) {
+  for (let property in costItem) {
     // Discard the "category" property because it's not in the layout
-    if (Object.keys(costItem)[a] !== "category") {
+    if (property !== "category") {
       const p = document.createElement("p");
       // Add "$" for numbers
-      if (typeof Object.values(costItem)[a] === "number") {
-        p.textContent = Object.values(costItem)[a] + "$";
+      if (typeof costItem[property] === "number") {
+        p.textContent = costItem[property] + "$";
       } else {
-        p.textContent = Object.values(costItem)[a];
+        p.textContent = costItem[property];
       }
       div.appendChild(p);
     }
