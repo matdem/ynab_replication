@@ -1,16 +1,17 @@
 // Budget's Datas
-var budget = {
+let budget = {
   year: 2019,
+  month: "May",
   categories: [
     {
       name: "Obligations",
-      totalBudgeted: 0,
-      totalAvailable: 0,
+      budgeted: 0,
+      available: 0,
     },
     {
       name: "Voitures",
-      totalBudgeted: 0,
-      totalAvailable: 0,
+      budgeted: 0,
+      available: 0,
     },
   ],
   costItems: [

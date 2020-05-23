@@ -6,8 +6,8 @@ for (let category of budget.categories) {
   // Calculate total budgeted and total available
   for (let item of budget.costItems) {
     if (category.name === item.category) {
-      category.totalBudgeted += item.budgeted;
-      category.totalAvailable += item.available;
+      category.budgeted += item.budgeted;
+      category.available += item.available;
     }
   }
 
@@ -23,11 +23,11 @@ for (let category of budget.categories) {
       case "name":
         p.textContent = category.name;
         break;
-      case "totalBudgeted": // Add the head title and the total
-        p.innerHTML = `Budgeted<br />${category.totalBudgeted}$`;
+      case "budgeted": // Add the head title and the total
+        p.innerHTML = `Budgeted<br />${category.budgeted}$`;
         break;
-      case "totalAvailable": // Add the head title and the total
-        p.innerHTML = `Available<br />${category.totalAvailable}$`;
+      case "available": // Add the head title and the total
+        p.innerHTML = `Available<br />${category.available}$`;
         break;
     }
     div.appendChild(p);
@@ -37,7 +37,7 @@ for (let category of budget.categories) {
 
 // Cost items rows
 for (let costItem of budget.costItems) {
-  // Create a div for each costItem with its attributes
+  // Create a div for each costItem and set its attributes
   const div = document.createElement("div");
   div.className = "costItem";
   div.classList.add(costItem.category);
