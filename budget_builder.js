@@ -6,10 +6,12 @@ class Budget {
     this.costItems = [];
   }
   addCategory(categoryName) {
-    return this.categories.push(new Category(categoryName));
+    const category = new Category(categoryName);
+    return this.categories.push(category);
   }
   addCostItem(costItemName, category) {
-    return this.costItems.push(new CostItem(costItemName, category));
+    const costItem = new CostItem(costItemName, category);
+    return this.costItems.push(costItem);
   }
 }
 
@@ -28,8 +30,16 @@ class CostItem extends Category {
   }
 }
 
+class Transaction {
+  constructor(date, amount, account, category, costItem) {
+    this.date = date;
+    this.amount = amount;
+    this.account = account;
+    this.category = category;
+    this.costItem = costItem;
+  }
+}
 const budget2020 = new Budget(2020, "May");
 budget2020.addCategory("Voitures");
 budget2020.addCostItem("Essence", "Voitures");
 console.log(budget2020);
-
