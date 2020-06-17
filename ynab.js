@@ -1,3 +1,4 @@
+
 // Creation of a table with budget's datas from "./budget_datas.js"
 const budgetElt = document.getElementById("budget");
 
@@ -19,9 +20,14 @@ for (let category of budget.categories) {
   // Add each head colum's category
   for (let property in category) {
     const pElt = document.createElement("p");
+    const addButton = document.createElement("button");
+    addButton.textContent = "+";
+    addButton.className = "addCategory"
+    addButton.addEventListener("click", function inputCategory() );
     switch (property) {
       case "name":
         pElt.textContent = category.name;
+        pElt.appendChild(addButton);
         break;
       case "budgeted": // Add the head title and the total
         pElt.innerHTML = `Budgeted<br />${category.budgeted}$`;

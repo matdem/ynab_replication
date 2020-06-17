@@ -3,15 +3,7 @@ class Budget {
     this.year = year;
     this.month = month;
     this.categories = [];
-    this.costItems = [];
-  }
-  addCategory(categoryName) {
-    const category = new Category(categoryName);
-    return this.categories.push(category);
-  }
-  addCostItem(costItemName, category) {
-    const costItem = new CostItem(costItemName, category);
-    return this.costItems.push(costItem);
+    // this.costItems = [];
   }
 }
 
@@ -20,13 +12,13 @@ class Category {
     this.name = name;
     this.budgeted = budgeted;
     this.available = available;
+    this.costItems = [];
   }
 }
 
 class CostItem extends Category {
   constructor(name, category, budgeted, available) {
     super(name, budgeted, available);
-    this.category = category;
   }
 }
 
@@ -39,7 +31,30 @@ class Transaction {
     this.costItem = costItem;
   }
 }
-const budget2020 = new Budget(2020, "May");
-budget2020.addCategory("Voitures");
-budget2020.addCostItem("Essence", "Voitures");
+function hasValue(value, prop, object) {
+  return object[prop] === value;
+}
+
+function addCategory(categoryName, budget) {
+  let budgetUpdated = Object.assign({}, budget);
+  budgetUpdated.categories = [
+    ...budgetUpdated.categories,
+    new Category(categoryName),
+  ];
+  return budgetUpdated;
+}
+
+function addCostItem(costItemName, categoryName, budget) {
+  let budgetUpdated = Object.assign({}, budget);
+  let categoryIndex = null;
+  budgetUpdated.categories.map((category) => {
+    category.costItems = [...category.costItems, new CostItem(costItemName)];
+  });
+  return budgetUpdated;
+}
+
+let budget2020 = new Budget(2020, "May");
+budget2020 = addCategory("Voitures", budget2020);
+budget2020 = addCategory("Maison", budget2020);
+budget2020 = addCostItem("Essence", "Voitures", budget2020);
 console.log(budget2020);

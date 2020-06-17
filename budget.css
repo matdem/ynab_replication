@@ -13,7 +13,7 @@ body {
 }
 
 .category {
-  background-color: lightgreen;
+  background-color: #aae8dcc2;
   font-size: 18px;
   font-weight: bold;
 }
@@ -40,6 +40,6 @@ body {
 .costItem p:nth-child(2),
 .costItem p:nth-child(3) {
   border-radius: 15px;
-  background-color: green;
+  background-color: #0d880d;
   color: white;
 }
