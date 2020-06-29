@@ -1,45 +1,138 @@
 body {
-  margin: 0;
-  padding: 0;
+  margin: auto;
+  font-size: 16px;
 }
 
-.category,
-.costItem {
-  display: flex;
-  border-bottom: 1px solid black;
-  padding: 0 5px 0 5px;
-  margin: 0;
-  align-items: center;
+body * {
+  /*border: 1px solid black;*/
 }
 
 .category {
   background-color: #aae8dcc2;
-  font-size: 18px;
-  font-weight: bold;
+}
+
+.category,
+.costItem {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: center;
+  border-bottom: 1px solid grey;
+}
+
+.costItem {
+  padding: 10px 0 0 0;
+}
+
+.category ~ .costItem {
+  padding-bottom: 10px;
 }
 
 .category p,
 .costItem p {
-  flex: 2 1 20%;
+  margin: 5px;
+  padding: 0px 5px;
+}
+
+.categoryName,
+.budgeted,
+.available {
+  font-weight: bold;
+}
+
+.categoryName {
+  font-size: 19px;
+}
+
+.button {
+  display: inline;
+  margin-left: 10px;
+  font-size: 0.7em;
+  font-weight: bold;
+  padding: 1px 4px;
+  color: grey;
+  border: 2px solid grey;
+  border-radius: 100%;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.categoryForm {
+  display: none;
+  position: absolute;
+  background-color: #bcf;
+  margin-top: 3px;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.number,
+.budgeted,
+.available {
   text-align: center;
-  /*border: 1px solid black;*/
-  margin: 3px;
-  padding: 3px;
 }
 
-.category p:first-child,
-.costItem p:first-child {
-  flex: 1 2 60%;
-  text-align: left;
+.number {
+  background-color: #00cc00;
+  border-radius: 20px;
+  font-weight: normal;
 }
 
-.costItem p:first-child {
-  font-size: 18px;
+@media screen and (min-width: 700px) {
+  body {
+    width: 700px;
+  }
+
+  .categoryName,
+  .costItemName {
+    grid-column-start: 1;
+    grid-column-end: 6;
+  }
+
+  .budgeted {
+    grid-column-start: 8;
+    grid-column-end: 10;
+  }
+
+  .available {
+    grid-column-start: 11;
+    grid-column-end: 13;
+  }
 }
 
-.costItem p:nth-child(2),
-.costItem p:nth-child(3) {
-  border-radius: 15px;
-  background-color: #0d880d;
-  color: white;
+@media screen and (min-width: 401px) and (max-width: 699px) {
+  body {
+    width: 400px;
+  }
+
+  .categoryName,
+  .costItemName {
+    grid-column-start: 1;
+    grid-column-end: 5;
+  }
+
+  .budgeted {
+    grid-column-start: 6;
+    grid-column-end: 9;
+  }
+
+  .available {
+    grid-column-start: 10;
+    grid-column-end: 13;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  body {
+    width: 100%;
+    font-size: 15px;
+  }
+
+  .category,
+  .costItem {
+    grid-template-columns: 1.5fr 1fr 1fr;
+  }
 }
