@@ -1,5 +1,5 @@
 // Use "budget datas"
-// Use "Tiny FP Lib"
+// Use "tiny_fp_lib.js"
 
 function createElement(htmlTag) {
   return document.createElement(htmlTag);
@@ -33,10 +33,6 @@ function addTextElement(text, element) {
   let elementCopied = element;
   elementCopied.innerHTML = text;
   return elementCopied;
-}
-
-function indexOfName(name, arrOfObj) {
-  return arrOfObj.map((obj) => obj.name).indexOf(name);
 }
 
 function totalCostItems(property, categoryName) {
