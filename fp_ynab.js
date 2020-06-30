@@ -1,4 +1,4 @@
-// Use "budget datas"
+// Use "builder.js"
 // Use "tiny_fp_lib.js"
 
 function createElement(htmlTag) {
@@ -120,6 +120,21 @@ function append(parent, ...children) {
   return parentCopied;
 }
 
+function hasCategoryElt(categoryName) {
+  var category = document.getElementById(categoryName);
+  return category != null || category != undefined;
+}
+
+function hasCostItemElt(costItemName) {
+  var costItem = document.getElementsByClassName("costItemName");
+  for (let i = 0; i < costItem.length; i += 1) {
+    if (costItem[i].textContent == costItemName) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function createCategoryForm() {
   let categoryFormElt = addElement("div", "categoryForm", "");
 
@@ -130,6 +145,7 @@ function createCategoryForm() {
   let inputElt = setInputElt(createElement("input"));
   inputElt.addEventListener("keydown", (event) => {
     if (event.keyCode === 13) {
+      budget.addCategory(event.value);
     }
   });
 
@@ -139,12 +155,15 @@ function createCategoryForm() {
   });
 
   let confirmButton = addElement("button", "confimButton", "Add");
+  confirmButton.addEventListener("click", () => {
+    budget.addCategory(inputElt.value);
+  });
 
   return append(categoryFormElt, inputElt, confirmButton, cancelButton);
 }
 
 function createCategoryName(categoryName) {
-  let categoryNameElt = addElement("p", "categoryName", categoryName);
+  let categoryNameElt = addElement("div", "categoryName", categoryName);
   let categoryFormElt = createCategoryForm();
   let addButtonElt = addElement("div", "button", "+");
   addButtonElt.addEventListener("click", function () {
@@ -156,18 +175,19 @@ function createCategoryName(categoryName) {
 
 function createCategory(categoryName) {
   let categoryElt = addElement("div", "category", "");
+  categoryElt.id = categoryName;
 
   let budgetedText =
     "Budgeted" +
     "<br>" +
     currencyFormat(totalCostItems("budgeted", categoryName));
-  let budgetedElt = addElement("p", "budgeted", budgetedText);
+  let budgetedElt = addElement("div", "budgeted", budgetedText);
 
   let availableText =
     "Available" +
     "<br />" +
     currencyFormat(totalCostItems("available", categoryName));
-  let availableElt = addElement("p", "available", availableText);
+  let availableElt = addElement("div", "available", availableText);
 
   return append(
     categoryElt,
@@ -185,24 +205,21 @@ function createACategoryRow(categoryName) {
 }
 
 function createCostItem(costItemName, categoryName) {
-  const categoryIndex = indexOfName(categoryName, budget.categories);
-  const category = budget.categories[categoryIndex];
-  const costItemIndex = indexOfName(costItemName, category.costItems);
-  const costItem = category.costItems[costItemIndex];
+  let costItem = budget.getCostItem(costItemName, categoryName);
 
   let costItemElt = addElement("div", "costItem", "");
 
-  let costItemNameElt = addElement("p", "costItemName", costItemName);
+  let costItemNameElt = addElement("div", "costItemName", costItemName);
 
   let budgetedElt = addElement2(
-    "p",
+    "div",
     currencyFormat(costItem.budgeted),
     "budgeted",
     "number"
   );
 
   let availableElt = addElement2(
-    "p",
+    "div",
     currencyFormat(costItem.available),
     "available",
     "number"
@@ -218,10 +235,18 @@ function createACostItemRow(costItemName, categoryName) {
   return append(budgetElt, costItemElt);
 }
 
-budget.categories.map((category) => {
-  createACategoryRow(category.name);
+function displayBudget(budget) {
+  budget.categories.map((category) => {
+    if (!hasCategoryElt(category.name)) {
+      createACategoryRow(category.name);
+    }
 
-  category.costItems.map((costItem) => {
-    createACostItemRow(costItem.name, category.name);
+    category.costItems.map((costItem) => {
+      if (hasCategoryElt(category.name) && !hasCostItemElt(costItem.name)) {
+        createACostItemRow(costItem.name, category.name);
+      }
+    });
   });
-});
+}
+
+displayBudget(budget);
