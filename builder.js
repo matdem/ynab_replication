@@ -1,27 +1,48 @@
+// Use "tiny_fp_lib.js"
+
 class Budget {
   constructor(year) {
     this.year = year;
     this.categories = [];
   }
 
+  hasCategory(categoryName) {
+    return this.categories
+      .map((category) => category.name)
+      .includes(categoryName);
+  }
+
   addCategory(name) {
-    this.categories = [...this.categories, new Category(name)];
+    if (!this.hasCategory(name)) {
+      this.categories = [...this.categories, new Category(name)];
+    } else {
+      alert("This category already exists.\nSelect another name, please.");
+    }
 
     return this;
   }
 
   addCostItem(name, categoryName) {
-    var category = this.getCategory(categoryName);
-
-    category.costItems = [...category.costItems, new CostItem(name)];
+    if (this.hasCategory(categoryName)) {
+      var category = this.getCategory(categoryName);
+      category.costItems = [...category.costItems, new CostItem(name)];
+    } else {
+      alert(
+        `The category "${categoryName}" doesn't exist.\nPlease, create it before to add it a cost item.`
+      );
+    }
 
     return this;
   }
 
   getCategory(categoryName) {
-    var categoryIndex = indexOfName(categoryName, this.categories);
+    if (this.hasCategory(categoryName)) {
+      var categoryIndex = indexOfName(categoryName, this.categories);
 
-    return this.categories[categoryIndex];
+      return this.categories[categoryIndex];
+    } else {
+      console.error("Category not created yet");
+    }
   }
 
   getCategoryBudgeted(categoryName) {
@@ -83,10 +104,6 @@ function output(elt) {
   console.log(elt);
 }
 
-function indexOfName(name, arrOfobj) {
-  return arrOfobj.map((obj) => obj.name).indexOf(name);
-}
-
 var budget = new Budget(2020);
 budget
   .addCategory("Cars")
@@ -99,5 +116,3 @@ budget
   .setCostItemBudgeted(120, "Mortage", "Obligations")
   .setCostItemBudgeted(45, "Fuel", "Cars")
   .setCostItemBudgeted(35, "Internet", "Obligations");
-
-output(budget);
