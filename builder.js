@@ -12,6 +12,13 @@ class Budget {
       .includes(categoryName);
   }
 
+  hasCostItem(costItemName, categoryName) {
+    var category = this.getCategory(categoryName);
+    return category.costItems
+      .map((costItem) => costItem.name)
+      .includes(costItemName);
+  }
+
   addCategory(name) {
     if (!this.hasCategory(name)) {
       this.categories = [...this.categories, new Category(name)];
@@ -24,8 +31,14 @@ class Budget {
 
   addCostItem(name, categoryName) {
     if (this.hasCategory(categoryName)) {
-      var category = this.getCategory(categoryName);
-      category.costItems = [...category.costItems, new CostItem(name)];
+      if (!this.hasCostItem(name, categoryName)) {
+        var category = this.getCategory(categoryName);
+        category.costItems = [...category.costItems, new CostItem(name)];
+      } else {
+        alert(
+          `The cost item "${name}" already exists.\nPlease chose another name.`
+        );
+      }
     } else {
       alert(
         `The category "${categoryName}" doesn't exist.\nPlease, create it before to add it a cost item.`
@@ -114,5 +127,5 @@ budget
   .addCostItem("Internet", "Obligations")
   .setCostItemBudgeted(20, "Maintenance", "Cars")
   .setCostItemBudgeted(120, "Mortage", "Obligations")
-  .setCostItemBudgeted(45, "Fuel", "Cars")
+  .setCostItemBudgeted(12543.23, "Fuel", "Cars")
   .setCostItemBudgeted(35, "Internet", "Obligations");
