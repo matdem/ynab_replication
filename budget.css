@@ -85,10 +85,17 @@ body * {
   body {
     width: 700px;
   }
-
-  .categoryName,
-  .costItemName {
+  .cost-item-checkbox {
     grid-column-start: 1;
+    grid-column-end: 2;
+  }
+
+  .categoryName {
+    grid-column-start: 1;
+    grid-column-end: 6;
+  }
+  .costItemName {
+    grid-column-start: 2;
     grid-column-end: 6;
   }
 
@@ -108,9 +115,18 @@ body * {
     width: 400px;
   }
 
-  .categoryName,
-  .costItemName {
+  .cost-item-checkbox {
     grid-column-start: 1;
+    grid-column-end: 2;
+  }
+
+  .categoryName {
+    grid-column-start: 1;
+    grid-column-end: 5;
+  }
+
+  .costItemName {
+    grid-column-start: 2;
     grid-column-end: 5;
   }
 
@@ -134,5 +150,9 @@ body * {
   .category,
   .costItem {
     grid-template-columns: 1.5fr 1fr 1fr;
+  }
+
+  .cost-item-checkbox {
+    display: none;
   }
 }
