@@ -1,6 +1,4 @@
-// Use "builder.js"
-// Use "tiny_fp_lib.js"
-
+// Use "builder.js" Use "tiny_fp_lib.js"
 function createElement(htmlTag) {
   return document.createElement(htmlTag);
 }
@@ -87,146 +85,159 @@ function isInCategory(costItemName, categoryName) {
   return false;
 }
 
-function createCategoryForm(categoryName) {
-  let events = {
-    displayNone() {
-      inputElt.value = "";
-      categoryFormElt.style.display = "none";
-    },
+let budgetTable = {
+  createCategoryForm: function createCategoryForm(categoryName) {
+    let events = {
+      displayNone() {
+        inputElt.value = "";
+        categoryFormElt.style.display = "none";
+      },
 
-    addCostItemElt() {
-      budget.addCostItem(inputElt.value, categoryName);
-      displayBudget(budget);
-      displayNone(inputElt);
-    },
+      addCostItemElt() {
+        budget.addCostItem(inputElt.value, categoryName);
+        displayBudget(budget, budgetTable);
+        this.displayNone(inputElt);
+      },
 
-    getInputEltFocus(categoryName) {
-      let inputElt = document
+      getInputEltFocus() {
+        inputElt.focus();
+      },
+    };
+
+    let categoryFormElt = addElement("div", "", "categoryForm");
+    categoryFormElt.addEventListener("blur", events.displayNone);
+
+    let inputElt = createElement("input");
+    inputElt.setAttribute("type", "text");
+    inputElt.addEventListener("keydown", (event) => {
+      if (event.keyCode === 13) {
+        events.addCostItemElt();
+      }
+    });
+
+    let cancelButton = addElement("button", "Cancel", "cancelButton");
+    cancelButton.addEventListener("click", events.displayNone);
+
+    let confirmButton = addElement("button", "Add", "confimButton");
+    confirmButton.addEventListener("click", () => {
+      events.addCostItemElt();
+    });
+
+    return append(categoryFormElt, inputElt, confirmButton, cancelButton);
+  },
+
+  createCategoryName: function createCategoryName(categoryName) {
+    let categoryNameElt = addElement("div", categoryName, "categoryName");
+    let categoryFormElt = budgetTable.createCategoryForm(categoryName);
+    let addButtonElt = addElement("div", "+", "button");
+    addButtonElt.addEventListener("click", function () {
+      categoryFormElt.style.display = "block";
+      var inputElt = document
         .getElementById(categoryName)
         .querySelector("input");
       inputElt.focus();
-    },
-  };
+    });
 
-  let categoryFormElt = addElement("div", "", "categoryForm");
+    return append(categoryNameElt, addButtonElt, categoryFormElt);
+  },
 
-  let inputElt = createElement("input");
-  inputElt.setAttribute("type", "text");
-  inputElt.addEventListener("keydown", (event) => {
-    if (event.keyCode === 13) {
-      events.addCostItemElt();
+  createCategory: function createCategory(categoryName) {
+    let categoryElt = addElement("div", "", "category");
+    categoryElt.id = categoryName;
+
+    let budgetedText =
+      "Budgeted" +
+      "<br>" +
+      currencyFormat(totalCostItems("budgeted", categoryName));
+    let budgetedElt = addElement("div", budgetedText, "budgeted");
+
+    let availableText =
+      "Available" +
+      "<br />" +
+      currencyFormat(totalCostItems("available", categoryName));
+    let availableElt = addElement("div", availableText, "available");
+
+    return append(
+      categoryElt,
+      budgetTable.createCategoryName(categoryName),
+      budgetedElt,
+      availableElt
+    );
+  },
+
+  createACategoryRow: function createACategoryRow(categoryName) {
+    let budgetElt = document.getElementById("budget");
+    let categoryElt = budgetTable.createCategory(categoryName);
+
+    return append(budgetElt, categoryElt);
+  },
+
+  createInputBudgetedForm: function createInputBudgetedForm(
+    costItemName,
+    categoryName
+  ) {
+    let costItem = budget.getCostItem(costItemName, categoryName);
+
+    let inputBudgeted = createElement("input");
+    inputBudgeted.setAttribute("type", "text");
+  },
+
+  createCostItem: function createCostItem(costItemName, categoryName) {
+    let costItem = budget.getCostItem(costItemName, categoryName);
+
+    let costItemElt = addElement("div", "", "costItem", categoryName);
+
+    let checkBoxElt = addElement("input", "", "cost-item-checkbox");
+    checkBoxElt.setAttribute("type", "checkbox");
+
+    let costItemNameElt = addElement("div", costItemName, "costItemName");
+
+    let budgetedElt = addElement(
+      "div",
+      currencyFormat(costItem.budgeted),
+      "budgeted",
+      "number"
+    );
+    budgetedElt.addEventListener("click", (e) => {});
+    let availableElt = addElement(
+      "div",
+      currencyFormat(costItem.available),
+      "available",
+      "number"
+    );
+
+    return append(
+      costItemElt,
+      checkBoxElt,
+      costItemNameElt,
+      budgetedElt,
+      availableElt
+    );
+  },
+
+  createACostItemRow: function createACostItemRow(costItemName, categoryName) {
+    let budgetElt = document.getElementById("budget");
+    let costItemElt = budgetTable.createCostItem(costItemName, categoryName);
+    let categoryElt = document.getElementById(categoryName);
+
+    if (costItemElt.classList.contains(categoryName)) {
+      return budgetElt.insertBefore(costItemElt, categoryElt.nextSibling);
     }
-  });
-  inputElt.addEventListener("blur", events.displayNone);
+  },
+};
 
-  let cancelButton = addElement("button", "Cancel", "cancelButton");
-  cancelButton.addEventListener("click", events.displayNone);
-
-  let confirmButton = addElement("button", "Add", "confimButton");
-  confirmButton.addEventListener("click", events.addCostItemElt);
-
-  return append(categoryFormElt, inputElt, confirmButton, cancelButton);
-}
-
-function createCategoryName(categoryName) {
-  let categoryNameElt = addElement("div", categoryName, "categoryName");
-  let categoryFormElt = createCategoryForm(categoryName);
-  let addButtonElt = addElement("div", "+", "button");
-  addButtonElt.addEventListener("click", function () {
-    categoryFormElt.style.display = "block";
-    var inputElt = document.getElementById(categoryName).querySelector("input");
-    inputElt.focus();
-  });
-
-  return append(categoryNameElt, addButtonElt, categoryFormElt);
-}
-
-function createCategory(categoryName) {
-  let categoryElt = addElement("div", "", "category");
-  categoryElt.id = categoryName;
-
-  let budgetedText =
-    "Budgeted" +
-    "<br>" +
-    currencyFormat(totalCostItems("budgeted", categoryName));
-  let budgetedElt = addElement("div", budgetedText, "budgeted");
-
-  let availableText =
-    "Available" +
-    "<br />" +
-    currencyFormat(totalCostItems("available", categoryName));
-  let availableElt = addElement("div", availableText, "available");
-
-  return append(
-    categoryElt,
-    createCategoryName(categoryName),
-    budgetedElt,
-    availableElt
-  );
-}
-
-function createACategoryRow(categoryName) {
-  let budgetElt = document.getElementById("budget");
-  let categoryElt = createCategory(categoryName);
-
-  return append(budgetElt, categoryElt);
-}
-
-function createCostItem(costItemName, categoryName) {
-  let costItem = budget.getCostItem(costItemName, categoryName);
-
-  let costItemElt = addElement("div", "", "costItem", categoryName);
-
-  let checkBoxElt = addElement("input", "", "cost-item-checkbox");
-  checkBoxElt.setAttribute("type", "checkbox");
-
-  let costItemNameElt = addElement("div", costItemName, "costItemName");
-
-  let budgetedElt = addElement(
-    "div",
-    currencyFormat(costItem.budgeted),
-    "budgeted",
-    "number"
-  );
-
-  let availableElt = addElement(
-    "div",
-    currencyFormat(costItem.available),
-    "available",
-    "number"
-  );
-
-  return append(
-    costItemElt,
-    checkBoxElt,
-    costItemNameElt,
-    budgetedElt,
-    availableElt
-  );
-}
-
-function createACostItemRow(costItemName, categoryName) {
-  let budgetElt = document.getElementById("budget");
-  let costItemElt = createCostItem(costItemName, categoryName);
-  let categoryElt = document.getElementById(categoryName);
-
-  if (costItemElt.classList.contains(categoryName)) {
-    return budgetElt.insertBefore(costItemElt, categoryElt.nextSibling);
-  }
-}
-
-function displayBudget(budget) {
+function displayBudget(budget, budgetTable) {
   budget.categories.map((category) => {
     if (!hasCategoryElt(category.name)) {
-      createACategoryRow(category.name);
+      budgetTable.createACategoryRow(category.name);
     }
 
     category.costItems.map((costItem) => {
       if (!isInCategory(costItem.name, category.name)) {
-        createACostItemRow(costItem.name, category.name);
+        budgetTable.createACostItemRow(costItem.name, category.name);
       }
     });
   });
 }
 
-displayBudget(budget);
+displayBudget(budget, budgetTable);
