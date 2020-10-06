@@ -1,4 +1,4 @@
-# YNAB (Duplicate)
+# YNAB (Replication)
 
 This is a personnal project to duplicate the main
 features of YNAB.
