@@ -1,6 +1,6 @@
 # YNAB (Replication)
 
-This is a personnal project to duplicate the main
+This is a personnal project to replicate the main
 features of YNAB.
 
 ## Features
