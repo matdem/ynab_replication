@@ -50,3 +50,12 @@ function pipe(...fns) {
   });
 }
 
+export {
+  partial,
+  partialRight,
+  compose,
+  curry,
+  indexOfName,
+  reverseArgs,
+  pipe,
+};

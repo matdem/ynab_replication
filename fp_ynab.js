@@ -198,7 +198,7 @@ let budgetTable = {
       "budgeted",
       "number"
     );
-    budgetedElt.addEventListener("click", (e) => {});
+    budgetedElt.addEventListener("click", () => {});
     let availableElt = addElement(
       "div",
       currencyFormat(costItem.available),

@@ -1,4 +1,6 @@
-// Use "tiny_fp_lib.js"
+import { Category } from "./Category.js";
+import { CostItem } from "./CostItem.js";
+import { indexOfName } from "../../tiny_fp_lib.js";
 
 class Budget {
   constructor(year) {
@@ -94,38 +96,34 @@ class Budget {
 
     return costItem.budgeted;
   }
-}
 
-class Category {
-  constructor(name, budgeted = 0, available = 0) {
-    this.name = name;
-    this.budgeted = budgeted;
-    this.available = available;
-    this.costItems = [];
+  static getCategoryTotal(property, categoryName) {
+    const categories = this.categories;
+    const categoryIndex = indexOfName(categoryName, categories);
+
+    return categories[categoryIndex].costItems
+      .map((item) => item[property])
+      .reduce((sum, value) => sum + value, 0);
+  }
+
+  static currencyFormat(num) {
+    num = String(num.toFixed(2));
+    const part1 = num.match(/^[-\d]+/g)[0];
+    const part2 = num.match(/\d*$/g)[0];
+
+    function formatPart1(part) {
+      return part
+        .split("")
+        .reverse()
+        .reduceRight((prev, current, index) => {
+          return index % 3 !== 0 || index === 0
+            ? prev + current
+            : prev + current + " ";
+        }, "");
+    }
+
+    return `${formatPart1(part1)},${part2}$`;
   }
 }
 
-class CostItem {
-  constructor(name, budgeted = 0, available = 0) {
-    this.name = name;
-    this.budgeted = budgeted;
-    this.available = available;
-  }
-}
-
-function output(elt) {
-  console.log(elt);
-}
-
-var budget = new Budget(2020);
-budget
-  .addCategory("Cars")
-  .addCategory("Obligations")
-  .addCostItem("Fuel", "Cars")
-  .addCostItem("Maintenance", "Cars")
-  .addCostItem("Mortage", "Obligations")
-  .addCostItem("Internet", "Obligations")
-  .setCostItemBudgeted(20, "Maintenance", "Cars")
-  .setCostItemBudgeted(120, "Mortage", "Obligations")
-  .setCostItemBudgeted(12543.23, "Fuel", "Cars")
-  .setCostItemBudgeted(35, "Internet", "Obligations");
+export { Budget };
