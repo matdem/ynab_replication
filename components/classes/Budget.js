@@ -97,7 +97,7 @@ class Budget {
     return costItem.budgeted;
   }
 
-  static getCategoryTotal(property, categoryName) {
+  getCategoryTotal(property, categoryName) {
     const categories = this.categories;
     const categoryIndex = indexOfName(categoryName, categories);
 

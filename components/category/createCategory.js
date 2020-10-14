@@ -1,13 +1,12 @@
 import { createCategoryName } from "./createCategoryName.js";
-import { budgetedCategoryText } from "./budgetedCategoryText.js";
-import { availableCategoryText } from "./availableCategoryText.js";
+import { numberCategoryText } from "./numberCategoryText.js";
 
-function createCategory(categoryName) {
+function createCategory(categoryName, budgetDatas) {
   return `
     <div id=${categoryName} class="category">
       ${createCategoryName(categoryName)}
-      ${budgetedCategoryText(categoryName)}
-      ${availableCategoryText(categoryName)}
+      ${numberCategoryText("Budgeted", categoryName, budgetDatas)}
+      ${numberCategoryText("Available", categoryName, budgetDatas)}
     </div>
   `;
 }

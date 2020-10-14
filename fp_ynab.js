@@ -1,4 +1,6 @@
-// Use "builder.js" Use "tiny_fp_lib.js"
+// Use "builder.js"
+// Use "tiny_fp_lib.js"
+
 function createElement(htmlTag) {
   return document.createElement(htmlTag);
 }

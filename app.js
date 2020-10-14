@@ -41,12 +41,16 @@ function displayBudget(budgetDatas) {
 
   budgetDatas.categories.map((category) => {
     if (!hasCategoryElt(category.name)) {
-      budgetElt.innerHTML += createCategory(category.name);
+      budgetElt.innerHTML += createCategory(category.name, budgetDatas);
     }
 
     category.costItems.map((costItem) => {
       if (!isInCategory(costItem.name, category.name)) {
-        budgetElt.innerHTML += createCostItem(costItem.name, category.name);
+        budgetElt.innerHTML += createCostItem(
+          costItem.name,
+          category.name,
+          budgetDatas
+        );
       }
     });
   });

@@ -4,7 +4,7 @@ body {
 }
 
 body * {
-  /*border: 1px solid black;*/
+  /* border: 1px solid black; */
 }
 
 .category {
@@ -43,7 +43,7 @@ body * {
   font-size: 19px;
 }
 
-.button {
+.addButton {
   display: inline;
   margin-left: 10px;
   font-size: 0.7em;
@@ -111,7 +111,7 @@ body * {
 }
 
 @media screen and (min-width: 401px) and (max-width: 699px) {
-  body {
+  k body {
     width: 400px;
   }
 

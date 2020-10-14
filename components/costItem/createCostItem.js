@@ -1,6 +1,6 @@
 import { Budget } from "../classes/Budget.js";
 
-function createCostItem(budgetDatas, costItemName, categoryName) {
+function createCostItem(costItemName, categoryName, budgetDatas) {
   const costItem = budgetDatas.getCostItem(costItemName, categoryName);
 
   return `
